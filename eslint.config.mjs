@@ -9,7 +9,13 @@ export default defineConfig([
 		files: ['**/*.{js,mjs,cjs}'],
 		plugins: { js, import: importPlugin },
 		extends: ['js/recommended'],
-		languageOptions: { globals: globals.browser },
+		// remove globals.node if project is only in the browser
+		languageOptions: {
+			globals: {
+				...globals.browser,
+				...globals.node,
+			},
+		},
 		rules: {
 			quotes: 2,
 			eqeqeq: 2,
