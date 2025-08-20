@@ -100,14 +100,19 @@ class Calculator {
 		if (this.params.length === 1 && this.params[0] === '') {
 			// param hasn't been entered yet, ignore this button press
 			return;
-		} else if (this.params.length === 1) {
-			// overwrites the current operator
+		}
+
+		if (this.params.length === 1) {
 			this.operator = val;
 			this.params.push('');
-			return;
+		} else if (this.params[1] === '') {
+			// overwrites the current operator
+			this.operator = val;
 		} else {
 			//TODO:
 			// call the calculate function then update operator
+			console.log('call calculate first!');
+			this.operator = val;
 		}
 	}
 
