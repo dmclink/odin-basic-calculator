@@ -81,11 +81,27 @@ class Calculator {
 		this.params[idx] = `${this.params[idx]}${val}`;
 	}
 
+	/** Updates the display with a string of the currently inputted params and operator. */
 	updateDisplay() {
 		const displayString = `${this.params[0]} ${this.operator ?? ''} ${
 			this.params[1] ?? ''
 		}`;
 		this.display.textContent = displayString;
+	}
+
+	updateOperator(val) {
+		if (this.params.length === 1 && this.params[0] === '') {
+			// param hasn't been entered yet, ignore this button press
+			return;
+		} else if (this.params.length === 1) {
+			// overwrites the current operator
+			this.operator = val;
+			this.params.push('');
+			return;
+		} else {
+			//TODO:
+			// call the calculate function
+		}
 	}
 
 	/** Calls the appropriate function or updates params depending on the button pressed.
@@ -113,7 +129,12 @@ class Calculator {
 				this.updateDisplay();
 				break;
 
-			case ('+', '-', '*', '/'):
+			case '+':
+			case '-':
+			case '*':
+			case '/':
+				this.updateOperator(val);
+				this.updateDisplay();
 				//TODO:
 				break;
 
