@@ -81,6 +81,13 @@ class Calculator {
 		this.params[idx] = `${this.params[idx]}${val}`;
 	}
 
+	updateDisplay() {
+		const displayString = `${this.params[0]} ${this.operator ?? ''} ${
+			this.params[1] ?? ''
+		}`;
+		this.display.textContent = displayString;
+	}
+
 	/** Calls the appropriate function or updates params depending on the button pressed.
 	 * Number buttons will be concatenated with the top param.
 	 * Operators will either start a new param or result in calculation if an operator already exists.
@@ -103,6 +110,7 @@ class Calculator {
 			case '8':
 			case '9':
 				this.updateParams(val);
+				this.updateDisplay();
 				break;
 
 			case ('+', '-', '*', '/'):

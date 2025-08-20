@@ -38,6 +38,9 @@ html {
 	border-radius: 10px;
 	background: #292929;
 	margin-bottom: 1rem;
+	text-align: right;
+	color: whitesmoke;
+	font-size: 2rem;
 }
 
 .buttons {
