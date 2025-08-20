@@ -115,9 +115,8 @@ class Calculator {
 			// overwrites the current operator
 			this.operator = val;
 		} else {
-			//TODO:
-			// call the calculate function then update operator
-			console.log('call calculate first!');
+			this.calculate();
+			this.params.push('');
 			this.operator = val;
 		}
 	}
@@ -130,11 +129,46 @@ class Calculator {
 		this.dotBtn.disabled = false;
 	}
 
+	/** Adds a decimal point to the top param and disables dot button. */
 	dotPress() {
 		this.dotPressed = true;
 		this.dotBtn.disabled = true;
 		const idx = this.params.length - 1;
 		this.params[idx] = `${this.params[idx]}.`;
+	}
+
+	/** Calls the appropriate calculate function based on the stored operator. */
+	calculate() {
+		if (
+			this.operator === null ||
+			this.params.length !== 2 ||
+			this.params[1] === ''
+		) {
+			return;
+		}
+		const a = Number(this.params[0]);
+		const b = Number(this.params[1]);
+		let res;
+		switch (this.operator) {
+			case '+':
+				res = add(a, b);
+				break;
+
+			case '-':
+				res = subtract(a, b);
+				break;
+
+			case '*':
+				res = multiply(a, b);
+				break;
+
+			case '/':
+				res = divide(a, b);
+				break;
+		}
+
+		this.params = [res];
+		this.operator = null;
 	}
 
 	/** Calls the appropriate function or updates params depending on the button pressed.
@@ -171,7 +205,8 @@ class Calculator {
 				break;
 
 			case '=':
-				//TODO:
+				this.calculate();
+				this.updateDisplay();
 				break;
 
 			case 'mc':
