@@ -44,7 +44,7 @@ function divide(a, b) {
 class Calculator {
 	constructor() {
 		this.display = document.querySelector('#display');
-		this.displayString = '';
+		this.dotBtn = document.querySelector('#btn--dot');
 
 		// an array of strings
 		// represents the 0-2 parameters the user inputted. maximum length is 2
@@ -105,6 +105,12 @@ class Calculator {
 		if (this.params.length === 1) {
 			this.operator = val;
 			this.params.push('');
+
+			this.dotPressed = false;
+			this.dotBtn.disabled = false;
+
+			// clear trailing . and 0s
+			this.params[0] = String(Number(this.params[0]));
 		} else if (this.params[1] === '') {
 			// overwrites the current operator
 			this.operator = val;
@@ -121,6 +127,14 @@ class Calculator {
 		this.params = [''];
 		this.operator = null;
 		this.dotPressed = false;
+		this.dotBtn.disabled = false;
+	}
+
+	dotPress() {
+		this.dotPressed = true;
+		this.dotBtn.disabled = true;
+		const idx = this.params.length - 1;
+		this.params[idx] = `${this.params[idx]}.`;
 	}
 
 	/** Calls the appropriate function or updates params depending on the button pressed.
@@ -166,7 +180,8 @@ class Calculator {
 				break;
 
 			case '.':
-				//TODO:
+				this.dotPress();
+				this.updateDisplay();
 				break;
 		}
 	}
