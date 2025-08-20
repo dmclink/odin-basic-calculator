@@ -83,12 +83,19 @@ class Calculator {
 
 	/** Updates the display with a string of the currently inputted params and operator. */
 	updateDisplay() {
-		const displayString = `${this.params[0]} ${this.operator ?? ''} ${
-			this.params[1] ?? ''
-		}`;
+		const displayString =
+			this.params[0] === ''
+				? '\u00A0'
+				: `${this.params[0]} ${this.operator ?? ''} ${this.params[1] ?? ''}`;
 		this.display.textContent = displayString;
 	}
 
+	/** Updates the current operator if at least one param has been entered.
+	 * If no params entered it does nothing. If two params entered it calls calculate.
+	 *
+	 * @param {'+'|'-'|'*'|'/'} val - the user inputted operator
+	 * @returns
+	 */
 	updateOperator(val) {
 		if (this.params.length === 1 && this.params[0] === '') {
 			// param hasn't been entered yet, ignore this button press
@@ -100,8 +107,15 @@ class Calculator {
 			return;
 		} else {
 			//TODO:
-			// call the calculate function
+			// call the calculate function then update operator
 		}
+	}
+
+	/** Clears all input from memory. Does not clear display on its own */
+	clear() {
+		this.params = [''];
+		this.operator = null;
+		this.dotPressed = false;
 	}
 
 	/** Calls the appropriate function or updates params depending on the button pressed.
@@ -135,7 +149,6 @@ class Calculator {
 			case '/':
 				this.updateOperator(val);
 				this.updateDisplay();
-				//TODO:
 				break;
 
 			case '=':
@@ -143,7 +156,8 @@ class Calculator {
 				break;
 
 			case 'mc':
-				//TODO:
+				this.clear();
+				this.updateDisplay();
 				break;
 
 			case '.':
