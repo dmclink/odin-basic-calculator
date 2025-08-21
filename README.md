@@ -1,5 +1,7 @@
 # odin-basic-calculator
 
+A calculator with basic calculations built for [The Odin Project](https://www.theodinproject.com/) course
+
 ## Setup
 
 Visit [Live Demo](dmclink.github.io/odin-basic-calculator/index.html) on Github Pages or
