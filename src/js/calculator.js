@@ -56,9 +56,9 @@ class Calculator {
 		this.operator = null;
 
 		// represents whether the decimal has been pressed once for the current param.
-		// if pressed, coincides with a disabled dot button until cleared or calculated
+		// if pressed, dot button disabled until cleared, backspaced, or calculated.
 		// flips back to false if in any way the decimal is removed from the current param
-		this.dotPressed = false;
+		this.dotBtn.disabled = false;
 	}
 
 	/** Appends the incoming val to the top index in params.
@@ -106,7 +106,6 @@ class Calculator {
 			this.operator = val;
 			this.params.push('');
 
-			this.dotPressed = false;
 			this.dotBtn.disabled = false;
 
 			// clear trailing . and 0s
@@ -125,7 +124,6 @@ class Calculator {
 	clear() {
 		this.params = [''];
 		this.operator = null;
-		this.dotPressed = false;
 		this.dotBtn.disabled = false;
 	}
 
@@ -135,7 +133,6 @@ class Calculator {
 		if (this.dotBtn.disabled) {
 			return;
 		}
-		this.dotPressed = true;
 		this.dotBtn.disabled = true;
 		const idx = this.params.length - 1;
 		this.params[idx] = `${this.params[idx]}.`;
@@ -191,7 +188,6 @@ class Calculator {
 
 			if (paramCopy[len - 1] === '.') {
 				this.dotBtn.disabled = false;
-				this.dotPressed = false;
 			}
 
 			this.params[idx] = paramCopy.slice(0, len - 1);
