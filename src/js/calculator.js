@@ -64,7 +64,7 @@ class Calculator {
 	/** Appends the incoming val to the top index in params.
 	 * Overwrites or otherwise prevents leading zeroes.
 	 *
-	 * @param {string} val - the user inputted number as a string
+	 * @param {'0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9'} val - the user inputted number as a string
 	 * @returns
 	 */
 	updateParams(val) {
