@@ -167,8 +167,30 @@ class Calculator {
 				break;
 		}
 
-		this.params = [res];
+		this.params = [String(res)];
 		this.operator = null;
+	}
+
+	/** Deletes the last input. Deletes digits, decimals, and operators. If no input, does nothing. */
+	backspace() {
+		if (this.params.length === 1 && this.params[0] === '') {
+			return;
+		}
+
+		if (this.params.length === 2 && this.params[1] === '') {
+			this.operator = null;
+			this.params.pop();
+		} else {
+			const idx = this.params.length - 1;
+			const paramCopy = this.params[idx];
+			const len = this.params[idx].length;
+			if (paramCopy[len - 1] === '.') {
+				this.dotBtn.disabled = false;
+				this.dotPressed = false;
+			}
+
+			this.params[idx] = paramCopy.slice(0, len - 1);
+		}
 	}
 
 	/** Calls the appropriate function or updates params depending on the button pressed.
@@ -182,6 +204,10 @@ class Calculator {
 	buttonPress(val) {
 		console.log(val);
 		switch (val) {
+			case '←':
+				this.backspace();
+				break;
+
 			case '0':
 			case '1':
 			case '2':
@@ -193,7 +219,6 @@ class Calculator {
 			case '8':
 			case '9':
 				this.updateParams(val);
-				this.updateDisplay();
 				break;
 
 			case '+':
@@ -201,24 +226,22 @@ class Calculator {
 			case '*':
 			case '/':
 				this.updateOperator(val);
-				this.updateDisplay();
 				break;
 
 			case '=':
 				this.calculate();
-				this.updateDisplay();
 				break;
 
 			case 'mc':
 				this.clear();
-				this.updateDisplay();
 				break;
 
 			case '.':
 				this.dotPress();
-				this.updateDisplay();
 				break;
 		}
+
+		this.updateDisplay();
 	}
 }
 
