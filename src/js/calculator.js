@@ -41,6 +41,45 @@ function divide(a, b) {
 	return a / b;
 }
 
+/** Removes all child nodes from HTML element.
+ *
+ * @param {HTMLElement} parent - the element that will have all its child nodes removed
+ */
+function removeAllChildNodes(parent) {
+	while (parent.firstChild) {
+		parent.removeChild(parent.firstChild);
+	}
+}
+
+/** Creates and returns a span with class .sup and textcontent "-"
+ *
+ * @returns {HTMLElement} - the newly created span
+ */
+function createSupMinus() {
+	const newSpan = document.createElement('span');
+	newSpan.classList.add('sup');
+	newSpan.textContent = '-';
+	return newSpan;
+}
+
+/** Returns string with trimmed sign '-' from front of string if present.
+ * Otherwise returns original string.
+ *
+ * @param {string} s - the string to trim
+ * @returns the trimmed string
+ */
+function trimSign(s) {
+	if (s === '') {
+		return s;
+	}
+
+	if (s[0] === '-') {
+		return s.slice(1);
+	}
+
+	return s;
+}
+
 class Calculator {
 	constructor() {
 		this.display = document.querySelector('#display');
@@ -83,11 +122,33 @@ class Calculator {
 
 	/** Updates the display with a string of the currently inputted params and operator. */
 	updateDisplay() {
-		const displayString =
-			this.params[0] === ''
-				? '\u00A0'
-				: `${this.params[0]} ${this.operator ?? ''} ${this.params[1] ?? ''}`;
-		this.display.textContent = displayString;
+		removeAllChildNodes(this.display);
+		if (this.params[0] === '') {
+			// keep display style from collapsing on empty
+			this.display.textContent = '\u00A0';
+			return;
+		}
+
+		if (this.params[0][0] === '-') {
+			this.display.appendChild(createSupMinus());
+		}
+		this.display.appendChild(document.createTextNode(trimSign(this.params[0])));
+
+		if (this.operator === null) {
+			return;
+		}
+		this.display.appendChild(document.createTextNode(` ${this.operator}`));
+
+		if (this.params[1] === '') {
+			return;
+		}
+
+		if (this.params[1][0] === '-') {
+			this.display.appendChild(createSupMinus());
+		}
+		this.display.appendChild(
+			document.createTextNode(` ${trimSign(this.params[1])}`)
+		);
 	}
 
 	/** Updates the current operator if at least one param has been entered.
@@ -198,6 +259,27 @@ class Calculator {
 			}
 
 			this.params[idx] = paramCopy.slice(0, len - 1);
+
+			if (this.params[idx] === '-') {
+				this.params[idx] = '';
+			}
+		}
+	}
+
+	/** Toggles the sign of the top param between negative and positive.
+	 * Positive numbers don't show sign. Does nothing when applied on empty or 0 params.
+	 */
+	changeSign() {
+		const idx = this.params.length - 1;
+		if (this.params[idx] === '' || this.params[idx] === '0') {
+			// don't let users apply sign without a number
+			return;
+		}
+
+		if (this.params[idx][0] === '-') {
+			this.params[idx] = this.params[idx].slice(1);
+		} else {
+			this.params[idx] = `-${this.params[idx]}`;
 		}
 	}
 
@@ -212,6 +294,11 @@ class Calculator {
 	buttonPress(val) {
 		console.log(val, this.params);
 		switch (val) {
+			case '+/-':
+			case 's':
+				this.changeSign();
+				break;
+
 			case '←':
 			case 'Backspace':
 				this.backspace();
@@ -265,4 +352,6 @@ calcElement.addEventListener('click', (e) => {
 	}
 });
 
-document.addEventListener('keyup', (e) => calc.buttonPress(e.key));
+document.addEventListener('keyup', (e) => {
+	calc.buttonPress(e.key);
+});
