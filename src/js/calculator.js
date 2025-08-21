@@ -131,6 +131,10 @@ class Calculator {
 
 	/** Adds a decimal point to the top param and disables dot button. */
 	dotPress() {
+		// need to filter for key commands
+		if (this.dotBtn.disabled) {
+			return;
+		}
 		this.dotPressed = true;
 		this.dotBtn.disabled = true;
 		const idx = this.params.length - 1;
@@ -184,6 +188,7 @@ class Calculator {
 			const idx = this.params.length - 1;
 			const paramCopy = this.params[idx];
 			const len = this.params[idx].length;
+
 			if (paramCopy[len - 1] === '.') {
 				this.dotBtn.disabled = false;
 				this.dotPressed = false;
@@ -193,7 +198,7 @@ class Calculator {
 		}
 	}
 
-	/** Calls the appropriate function or updates params depending on the button pressed.
+	/** Calls the appropriate function or updates params depending on the UI button pressed.
 	 * Number buttons will be concatenated with the top param.
 	 * Operators will either start a new param or result in calculation if an operator already exists.
 	 * Equal sign will result in calculation.
@@ -202,9 +207,10 @@ class Calculator {
 	 * @param {string} val - the value of the button that was pressed
 	 */
 	buttonPress(val) {
-		console.log(val);
+		console.log(val, this.params);
 		switch (val) {
 			case '←':
+			case 'Backspace':
 				this.backspace();
 				break;
 
@@ -229,10 +235,12 @@ class Calculator {
 				break;
 
 			case '=':
+			case 'Enter':
 				this.calculate();
 				break;
 
 			case 'mc':
+			case 'c':
 				this.clear();
 				break;
 
@@ -253,3 +261,5 @@ calcElement.addEventListener('click', (e) => {
 		calc.buttonPress(e.target.textContent);
 	}
 });
+
+document.addEventListener('keyup', (e) => calc.buttonPress(e.key));
