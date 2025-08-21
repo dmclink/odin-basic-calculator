@@ -352,6 +352,11 @@ calcElement.addEventListener('click', (e) => {
 	}
 });
 
+// stops tab focus from tiggering button presses since Enter key is an alternative to =
+document.addEventListener('keydown', (e) => {
+	if (e.key === 'Enter') e.preventDefault();
+});
+
 document.addEventListener('keyup', (e) => {
 	calc.buttonPress(e.key);
 });
