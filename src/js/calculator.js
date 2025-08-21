@@ -143,11 +143,12 @@ class Calculator {
 			return;
 		}
 
+		this.display.appendChild(document.createTextNode(' '));
 		if (this.params[1][0] === '-') {
 			this.display.appendChild(createSupMinus());
 		}
 		this.display.appendChild(
-			document.createTextNode(` ${trimSign(this.params[1])}`)
+			document.createTextNode(`${trimSign(this.params[1])}`)
 		);
 	}
 
