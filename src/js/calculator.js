@@ -186,6 +186,13 @@ class Calculator {
 			const paramCopy = this.params[idx];
 			const len = this.params[idx].length;
 
+			// full remove "Infinity" on backspace to prevent string values left in params
+			// calculations such as a partial "Infinit"
+			if (paramCopy[len - 1] === 'y') {
+				this.params[idx] = '';
+				return;
+			}
+
 			if (paramCopy[len - 1] === '.') {
 				this.dotBtn.disabled = false;
 			}
