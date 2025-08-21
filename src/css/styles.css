@@ -30,7 +30,7 @@ html {
 }
 
 .main {
-	max-width: 40%;
+	max-width: 40rem;
 	margin: 0 auto;
 }
 
@@ -52,7 +52,7 @@ html {
 
 .buttons {
 	display: grid;
-	grid-template-columns: repeat(4, auto);
+	grid-template-columns: repeat(4, 1fr);
 }
 
 .btn {
